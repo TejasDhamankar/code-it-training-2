@@ -102,7 +102,11 @@ export default function Navbar() {
           <div className="w-10 h-10 relative">
             <Image
               src="/Images/logo.png"
-              alt="logo" fill className="object-contain" />
+              alt="logo"
+              fill
+              sizes="2.5rem"
+              className="object-contain"
+            />
           </div>
         </Link>
 
@@ -152,9 +156,12 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
+          <Link href="/admin/login">
           <Button variant="ghost" className="hidden sm:inline-flex text-sm">
             Login
           </Button>
+          </Link>
+          
           <Link href="/contact" className="text-sm font-medium hover:text-primary">
           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20">
             Get Started
