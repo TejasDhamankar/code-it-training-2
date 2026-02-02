@@ -21,6 +21,8 @@ export const AnimatedTestimonials = ({
   const [active, setActive] = useState(0);
   const [randomRotations, setRandomRotations] = useState<number[]>([]);
 
+  const [imgError, setImgError] = useState<Record<string, boolean>>({});
+
   useEffect(() => {
     const rotations = testimonials.map(
       () => Math.floor(Math.random() * 21) - 10
@@ -83,15 +85,27 @@ export const AnimatedTestimonials = ({
                     ease: "easeInOut",
                   }}
                   className="absolute inset-0 origin-bottom"
+                  style={{
+                    backgroundColor: 'rgba(0,0,0,0.1)'
+                  }}
                 >
-                  <img
-                    src={testimonial.src}
-                    alt={testimonial.name}
-                    width={500}
-                    height={500}
-                    draggable={false}
-                    className="h-full w-full rounded-3xl object-cover object-center"
-                  />
+                  {imgError[testimonial.src] ? (
+                    <div className="h-full w-full rounded-3xl bg-gray-200 dark:bg-neutral-800 flex items-center justify-center">
+                        <span className="text-gray-500">Image not available</span>
+                    </div>
+                  ) : (
+                    <img
+                        src={testimonial.src}
+                        alt={testimonial.name}
+                        width={500}
+                        height={500}
+                        draggable={false}
+                        onError={() => {
+                            setImgError((prev) => ({...prev, [testimonial.src]: true}))
+                        }}
+                        className="h-full w-full rounded-3xl object-cover object-center"
+                    />
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>

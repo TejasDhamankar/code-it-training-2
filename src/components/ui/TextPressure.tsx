@@ -178,6 +178,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
         @font-face {
           font-family: '${fontFamily}';
           src: url('${fontUrl}');
+          font-display: swap;
           font-style: normal;
         }
         .stroke span {

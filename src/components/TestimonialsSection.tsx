@@ -9,28 +9,28 @@ export default function TestimonialsSection() {
         "The learning experience was extremely structured and practical. Every concept was explained with real-world examples, which made it easy to apply immediately.",
       name: "Former Student",
       designation: "Full Stack Development Program",
-      src: "/images/testimonials/s1.jpg",
+      src: "/Images/testimonials/s1.jpg",
     },
     {
       quote:
         "What truly stood out was the mentorship and guidance. It felt less like a course and more like a professional growth journey.",
       name: "Program Graduate",
       designation: "Software Engineering Trainee",
-      src: "/images/testimonials/s2.jpg",
+      src: "/Images/testimonials/s2.jpg",
     },
     {
       quote:
         "Hands-on projects and continuous feedback helped me build confidence. The transition from learning to implementation felt very natural.",
       name: "Internship Candidate",
       designation: "Frontend Developer Track",
-      src: "/images/testimonials/s3.jpg",
+      src: "/Images/testimonials/s3.jpg",
     },
     {
         quote:
           "The placement support was phenomenal. They helped me craft my resume, conducted mock interviews, and connected me with top companies. I landed a job even before the course ended!",
         name: "Placed Alumnus",
         designation: "Data Science & AI Program",
-        src: "/images/testimonials/s4.jpg",
+        src: "/Images/testimonials/s4.jpg",
       },
   ];
 
