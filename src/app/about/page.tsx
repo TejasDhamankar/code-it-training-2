@@ -320,7 +320,7 @@ export default function AboutPage() {
                                 ].map((item, i) => (
                                     <div key={i} className="flex gap-6 items-start">
                                         <div className="h-12 w-12 bg-gray-100 text-gray-900 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-all">
-                                            {React.cloneElement(item.icon as React.ReactElement, { size: 24 })}
+                                            {React.cloneElement(item.icon, { size: 24 })}
                                         </div>
                                         <div>
                                             <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>

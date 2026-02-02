@@ -44,6 +44,8 @@ interface ProfileCardProps {
   miniAvatarUrl?: string;
   name?: string;
   title?: string;
+  role?: string;
+  description?: string;
   handle?: string;
   status?: string;
   contactText?: string;
@@ -75,6 +77,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   miniAvatarUrl,
   name = 'Preeti Karla',
   title = 'Founder',
+  role,
+  description,
   handle = 'Preeti Karla',
   status = 'Online',
   contactText = 'Contact',
@@ -607,7 +611,15 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                     pointerEvents: 'auto'
                   }}
                 >
-                  {title}
+                  {role || title}
+                </p>
+                <p 
+                    className="text-xs text-gray-500 mt-2 px-4"
+                    style={{
+                        pointerEvents: 'auto'
+                    }}
+                >
+                    {description}
                 </p>
               </div>
             </div>
