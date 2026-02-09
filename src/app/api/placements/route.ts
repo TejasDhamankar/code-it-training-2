@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
-import { Course } from "@/lib/models/Course";
+import { Placement } from "@/lib/models/Placement";
 import { isAdminAuthorized } from "@/lib/admin-auth";
 
 export async function GET() {
   await connectToDatabase();
-  const courses = await Course.find({}).sort({ updatedAt: -1 });
-  return NextResponse.json(courses);
+  const placements = await Placement.find({}).sort({ createdAt: -1 });
+  return NextResponse.json(placements);
 }
 
 export async function POST(req: Request) {
@@ -18,11 +18,10 @@ export async function POST(req: Request) {
 
     await connectToDatabase();
     const body = await req.json();
-
-    const newCourse = await Course.create(body);
-    return NextResponse.json(newCourse, { status: 201 });
+    const created = await Placement.create(body);
+    return NextResponse.json(created, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Failed to create course" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to create placement" }, { status: 500 });
   }
 }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { decrypt } from '@/lib/auth';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const session = request.cookies.get('session')?.value;
   const { pathname } = request.nextUrl;
 
@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
     try {
       await decrypt(session);
       return NextResponse.next();
-    } catch (error) {
+    } catch {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }

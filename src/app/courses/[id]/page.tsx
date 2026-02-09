@@ -1,50 +1,130 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
+import { ArrowLeft, CheckCircle2, Clock, MessageCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, CheckCircle2, MessageCircle } from "lucide-react";
+import { COURSE_CATEGORY_LABELS, type CourseCategory } from "@/lib/course-categories";
+import Link from "next/link";
 
-export default function CourseDetail() {
-  const { id } = useParams();
-  const [course, setCourse] = useState<any>(null);
+interface Course {
+  _id: string;
+  title: string;
+  slug: string;
+  category: CourseCategory;
+  description: string;
+  duration: string;
+  image?: string;
+}
+
+const LEARNING_POINTS = [
+  "Industry Relevant Skills",
+  "Live Project Experience",
+  "Certified Training",
+  "Placement Assistance",
+  "Mock Interviews",
+  "Resume Building",
+];
+
+export default function CourseDetailPage() {
+  const params = useParams<{ id: string }>();
+  const [course, setCourse] = useState<Course | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchCourse() {
-      const res = await fetch(`/api/courses`); // In a real app, use /api/courses/${id}
-      const allCourses = await res.json();
-      const match = allCourses.find((c: any) => c._id === id);
-      setCourse(match);
-    }
-    if (id) fetchCourse();
-  }, [id]);
+    const fetchCourse = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/courses/slug/${params.id}`);
+        if (!res.ok) {
+          throw new Error("Course not found");
+        }
+        const data = (await res.json()) as Course;
+        setCourse(data);
+      } catch (error) {
+        console.error(error);
+        setCourse(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!course) return <div className="min-h-screen flex items-center justify-center">Loading Course Details...</div>;
+    if (params.id) {
+      fetchCourse();
+    }
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-900 border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!course) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-white text-center">
+        <h2 className="text-2xl font-bold text-gray-900">Course Not Found</h2>
+        <p className="mt-2 text-gray-600">
+          We couldn&apos;t find the course you&apos;re looking for.
+        </p>
+        <Button asChild className="mt-6">
+          <Link href="/courses">
+            <ArrowLeft size={16} className="mr-2" />
+            Back to Courses
+          </Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-white pt-40 pb-24">
-      <div className="container mx-auto px-6 max-w-5xl">
-        <div className="grid lg:grid-cols-3 gap-16">
-          
-          {/* Main Info */}
-          <div className="lg:col-span-2">
-            <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 mb-6 uppercase tracking-widest px-4 py-1">
-              {course.category}
-            </Badge> [cite: 63]
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-8 leading-tight">
-              {course.title}
-            </h1> [cite: 61]
-            <p className="text-xl text-gray-600 leading-relaxed mb-12">
-              {course.description}
-            </p> [cite: 62]
+    <main className="min-h-screen bg-white pb-24 pt-32">
+      <div className="container mx-auto max-w-7xl px-4">
+        <div className="mb-8">
+          <Button asChild variant="outline">
+            <Link href="/courses">
+              <ArrowLeft size={16} className="mr-2" />
+              Back to Courses
+            </Link>
+          </Button>
+        </div>
 
-            <div className="space-y-6 border-t border-stone-100 pt-12">
-              <h3 className="text-2xl font-bold">What you'll learn</h3>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {["Industry Relevant Skills", "Live Project Experience", "Certified Training", "Job Assistance"].map((item) => (
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <div className="relative mb-6 h-80 w-full overflow-hidden rounded-2xl bg-gray-100">
+              {course.image && (
+                <Image
+                  src={course.image}
+                  alt={course.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 70vw"
+                  className="object-cover"
+                />
+              )}
+            </div>
+            
+            <Badge className="mb-4 bg-gray-100 text-gray-800">
+              {COURSE_CATEGORY_LABELS[course.category]}
+            </Badge>
+
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              {course.title}
+            </h1>
+            
+            <p className="mt-6 text-lg text-gray-600">
+              {course.description}
+            </p>
+
+            <div className="mt-12 rounded-2xl bg-gray-50 p-8">
+              <h2 className="text-2xl font-bold text-gray-900">What You&apos;ll Learn</h2>
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {LEARNING_POINTS.map((item) => (
                   <div key={item} className="flex items-center gap-3">
-                    <CheckCircle2 className="text-emerald-600" size={20} />
+                    <CheckCircle2 size={20} className="text-green-500" />
                     <span className="font-medium text-gray-700">{item}</span>
                   </div>
                 ))}
@@ -52,21 +132,32 @@ export default function CourseDetail() {
             </div>
           </div>
 
-          {/* Sticky Sidebar CTA */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-32 p-8 bg-stone-50 rounded-[2rem] border border-stone-200 shadow-xl">
-              <div className="flex items-center gap-3 text-stone-500 mb-6">
-                <Clock size={20} className="text-emerald-600" />
-                <span className="font-bold">Duration: {course.duration || "3-6 Months"}</span>
+          <aside className="lg:col-span-1">
+            <div className="sticky top-32 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
+              <div className="flex items-center gap-3 text-lg font-medium text-gray-700">
+                <Clock size={20} />
+                <span>Duration: <span className="font-bold text-gray-900">{course.duration || "3 Months"}</span></span>
               </div>
-              <Button className="w-full bg-emerald-600 h-14 rounded-xl text-lg font-bold mb-4 shadow-lg shadow-emerald-200">
-                Enroll in Course
-              </Button> [cite: 109, 110]
-              <Button variant="outline" className="w-full h-14 rounded-xl border-stone-200 flex gap-2">
-                <MessageCircle size={20} /> WhatsApp Us
-              </Button> [cite: 111]
+
+              <div className="mt-6 space-y-3">
+                <Link href="/contact">
+                <Button size="lg" className="h-12 w-full bg-gray-900 text-white hover:bg-gray-800">
+                  Enroll Now
+                </Button>
+                </Link>
+
+                <Link href="/contact">
+                <Button size="lg" variant="outline" className="h-12 w-full">
+                  <MessageCircle size={20} className="mr-2" />
+                  Contact Us
+                </Button>
+                </Link>
+              </div>
+              <p className="mt-4 text-center text-xs text-gray-500">
+                Have questions? Reach out to our team.
+              </p>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </main>
