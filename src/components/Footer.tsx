@@ -64,11 +64,11 @@ export default function Footer() {
                         </div>
                         <div className="flex items-center gap-2">
                             <Phone className="w-4 h-4 text-emerald-600" />
-                            +91 XXXXX XXXXX
+                            +91 7231925496
                         </div>
                         <div className="flex items-center gap-2">
                             <Mail className="w-4 h-4 text-emerald-600" />
-                            info@codeitinstitute.com
+                            careers.codeit@gmail.com
                         </div>
                     </div>
 
