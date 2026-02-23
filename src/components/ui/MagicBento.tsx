@@ -599,7 +599,8 @@ const MagicBento: React.FC<BentoProps> = ({
               '--glow-x': '50%',
               '--glow-y': '50%',
               '--glow-intensity': '0',
-              '--glow-radius': `${spotlightRadius}px`
+              '--glow-radius': `${spotlightRadius}px`,
+              gridColumn: isMobile ? 'span 1' : card.style?.gridColumn
             } as React.CSSProperties;
 
             const cardContent = (

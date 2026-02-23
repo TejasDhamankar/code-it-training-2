@@ -7,6 +7,7 @@ import Pillars from "@/components/Pillars"
 import TestimonialsSection from "@/components/TestimonialsSection"
 import VisionMission from "@/components/VisionMission"
 import WhyChooseUs from "@/components/WhyChooseUs"
+import Carousel from "@/components/carousel"
 
 export default function Page() {
   return (
@@ -15,15 +16,17 @@ export default function Page() {
         Since Navbar is in your layout.tsx, this will appear right below it.
       */}
       <Hero />
+      <Carousel />
 
       {/* You can add your other sections (Placement, Courses, etc.) 
         here as you build them.
       */}
       <Pillars/>
-      <TestimonialsSection/>
       <VisionMission/>
       <WhyChooseUs/>
+      <TestimonialsSection/>
       <FAQ />
+
     </main>
   )
 }

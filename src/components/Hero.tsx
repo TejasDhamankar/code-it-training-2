@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Hero() {
   const containerRef = useRef(null);
@@ -57,17 +58,15 @@ export default function Hero() {
             job-ready mindset.
           </p>
 
-          <div className="animate-text flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <Link href="/contact" className="animate-text flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Button
               size="lg"
               className="h-11 px-7 text-sm font-medium bg-black hover:bg-gray-800 text-white rounded-lg shadow-lg"
             >
               Start your free trial
             </Button>
-            <button className="text-sm font-medium text-black hover:text-gray-900 transition-colors">
-              View role based demos
-            </button>
-          </div>
+            
+          </Link>
         </div>
       </div>
 

@@ -41,18 +41,7 @@ export default function WhyChooseUs() {
       description: "We don't just train you for your first job. Our curriculum prepares you for long-term career growth with advanced modules and specializations.",
       highlight: "Future-ready skills",
     },
-    {
-      icon: <BookOpen className="w-8 h-8" />,
-      title: "Flexible Learning Options",
-      description: "Choose from weekday, weekend, or fast-track batches. Access recorded sessions and study materials 24/7 for revision and self-paced learning.",
-      highlight: "Learn at your own pace",
-    },
-    {
-      icon: <Target className="w-8 h-8" />,
-      title: "Job-Ready Training",
-      description: "Focus on practical skills over theory. Learn industry best practices, version control, agile methodologies, and professional communication from day one.",
-      highlight: "Industry-standard practices",
-    },
+    
   ];
 
   const featuresWithLayout = features.map((feature, index) => ({
