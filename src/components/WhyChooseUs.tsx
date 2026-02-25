@@ -2,6 +2,7 @@
 import React from "react";
 import MagicBento from "@/components/ui/MagicBento";
 import { GraduationCap, Code2, Briefcase, Users, Award, TrendingUp, BookOpen, Target } from "lucide-react";
+import Link from "next/link";
 
 export default function WhyChooseUs() {
   const features = [
@@ -98,9 +99,14 @@ export default function WhyChooseUs() {
           <p className="text-base md:text-lg text-gray-700 mb-6">
             Ready to transform your career with industry-leading IT training?
           </p>
-          <button className="h-11 px-7 text-sm font-medium bg-black hover:bg-gray-800 text-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl">
-            Explore Our Courses
-          </button>
+          
+          <Link
+  href="/courses"
+  className="inline-flex items-center justify-center h-11 px-7 text-sm font-medium bg-black hover:bg-gray-800 text-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl"
+>
+  Explore Our Courses
+</Link>
+          
         </div>
       </div>
     </section>

@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(bytes);
 
     // Define the upload directory and ensure it exists
-    const uploadDir = path.join(process.cwd(), "public/Images/courses");
+    const uploadDir = path.join(process.cwd(), "public/uploads/courses");
     await ensureDirectoryExists(uploadDir);
 
     // Define the full path for the file
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     await writeFile(filePath, buffer);
 
     // Return the public path of the file
-    const publicPath = `/Images/courses/${uniqueFilename}`;
+    const publicPath = `/uploads/courses/${uniqueFilename}`;
     return NextResponse.json({ success: true, path: publicPath });
 
   } catch (error) {

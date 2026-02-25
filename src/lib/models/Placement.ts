@@ -9,6 +9,7 @@ const PlacementSchema = new Schema(
     packageOffered: { type: String, default: "", trim: true },
     year: { type: Number, required: true },
     image: { type: String, default: "" },
+    placedAt: { type: Date, required: true },
   },
   { timestamps: true }
 );

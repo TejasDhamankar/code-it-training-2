@@ -38,8 +38,8 @@ const Carousel = () => {
           <Image
             src={image.src}
             alt={image.alt}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             quality={100}
             priority={index === 0} // Prioritize loading the first image
           />

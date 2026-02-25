@@ -14,19 +14,32 @@ interface Course {
   title: string;
   slug: string;
   category: CourseCategory;
+  shortDescription: string;
+  fullDescription: string;
   description: string;
   duration: string;
-  image?: string;
+  level: "Beginner" | "Intermediate" | "Advanced";
+  language: "English" | "Hindi" | "Mixed";
+  mode: "Online" | "Offline" | "Hybrid";
+  thumbnail: string;
+  previewVideo?: string;
+  modules: {
+    moduleTitle: string;
+    topics: string[];
+  }[];
+  keyHighlights: string[];
+  toolsCovered: string[];
+  placementSupport: boolean;
+  averagePackage?: string;
+  hiringPartners: string[];
+  price: number;
+  discountPrice?: number;
+  isPopular: boolean;
+  startDate: string;
+  seatsAvailable: number;
+  metaTitle?: string;
+  metaDescription?: string;
 }
-
-const LEARNING_POINTS = [
-  "Industry Relevant Skills",
-  "Live Project Experience",
-  "Certified Training",
-  "Placement Assistance",
-  "Mock Interviews",
-  "Resume Building",
-];
 
 export default function CourseDetailPage() {
   const params = useParams<{ id: string }>();
@@ -96,15 +109,13 @@ export default function CourseDetailPage() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <div className="relative mb-6 h-80 w-full overflow-hidden rounded-2xl bg-gray-100">
-              {course.image && (
-                <Image
-                  src={course.image}
-                  alt={course.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 70vw"
-                  className="object-cover"
-                />
-              )}
+              <Image
+                src={course.thumbnail || "/images/placeholder.png"}
+                alt={course.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 70vw"
+                className="object-cover"
+              />
             </div>
             
             <Badge className="mb-4 bg-gray-100 text-gray-800">
@@ -116,28 +127,91 @@ export default function CourseDetailPage() {
             </h1>
             
             <p className="mt-6 text-lg text-gray-600">
-              {course.description}
+              {course.shortDescription}
             </p>
 
-            <div className="mt-12 rounded-2xl bg-gray-50 p-8">
-              <h2 className="text-2xl font-bold text-gray-900">What You&apos;ll Learn</h2>
-              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {LEARNING_POINTS.map((item) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <CheckCircle2 size={20} className="text-green-500" />
-                    <span className="font-medium text-gray-700">{item}</span>
-                  </div>
-                ))}
+            {course.keyHighlights && course.keyHighlights.length > 0 && (
+              <div className="mt-12 rounded-2xl bg-gray-50 p-8">
+                <h2 className="text-2xl font-bold text-gray-900">What You&apos;ll Learn</h2>
+                <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {course.keyHighlights.map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <CheckCircle2 size={20} className="text-green-500" />
+                      <span className="font-medium text-gray-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+            
+            {course.fullDescription && (
+              <div className="mt-12">
+                <h2 className="text-2xl font-bold text-gray-900">Full Description</h2>
+                <div
+                  className="prose prose-lg mt-6 max-w-none"
+                  dangerouslySetInnerHTML={{ __html: course.fullDescription }}
+                />
+              </div>
+            )}
+
+            {course.toolsCovered && course.toolsCovered.length > 0 && (
+              <div className="mt-12">
+                <h2 className="text-2xl font-bold text-gray-900">Tools Covered</h2>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {course.toolsCovered.map((tool) => (
+                    <Badge key={tool} variant="secondary">{tool}</Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+            
           </div>
 
           <aside className="lg:col-span-1">
             <div className="sticky top-32 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
               <div className="flex items-center gap-3 text-lg font-medium text-gray-700">
                 <Clock size={20} />
-                <span>Duration: <span className="font-bold text-gray-900">{course.duration || "3 Months"}</span></span>
+                <span>Duration: <span className="font-bold text-gray-900">{course.duration}</span></span>
               </div>
+
+              <ul className="mt-4 space-y-2 text-sm text-gray-600">
+                <li><strong>Level:</strong> {course.level}</li>
+                <li><strong>Mode:</strong> {course.mode}</li>
+                <li><strong>Language:</strong> {course.language}</li>
+                <li><strong>Seats Available:</strong> {course.seatsAvailable}</li>
+                <li><strong>Start Date:</strong> {new Date(course.startDate).toLocaleDateString()}</li>
+              </ul>
+
+              <div className="mt-6">
+                <p className="text-3xl font-bold text-gray-900">
+                  ₹{course.discountPrice?.toLocaleString() ?? course.price.toLocaleString()}
+                  {course.discountPrice && (
+                    <span className="ml-2 text-xl font-normal text-gray-500 line-through">
+                      ₹{course.price.toLocaleString()}
+                    </span>
+                  )}
+                </p>
+              </div>
+
+              {course.placementSupport && (
+                <div className="mt-6 rounded-lg bg-green-50 p-4 text-center">
+                  <p className="font-bold text-green-700">100% Placement Support</p>
+                  {course.averagePackage && (
+                    <p className="text-sm text-green-600">Average Package: {course.averagePackage}</p>
+                  )}
+                </div>
+              )}
+
+              {course.hiringPartners && course.hiringPartners.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="font-bold text-gray-900">Hiring Partners</h3>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {course.hiringPartners.map((partner) => (
+                      <Badge key={partner} variant="outline">{partner}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="mt-6 space-y-3">
                 <Link href="/contact">

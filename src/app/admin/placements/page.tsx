@@ -2,18 +2,24 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { Briefcase, Plus, Search, Trash2, User, UserRound } from "lucide-react";
+import { Briefcase, Plus, Search, Trash2, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+// Helper to format date to YYYY-MM-DD
+const toISODateString = (date: Date) => {
+  return date.toISOString().split('T')[0];
+};
 
 interface Placement {
   _id: string;
   studentName: string;
   course: string;
   company: string;
-  role: string;
+  role:string;
   packageOffered?: string;
   year: number;
+  placedAt: string;
   image?: string;
 }
 
@@ -24,6 +30,7 @@ interface PlacementForm {
   role: string;
   packageOffered: string;
   year: string;
+  placedAt: string;
   image: string;
 }
 
@@ -34,6 +41,7 @@ const INITIAL_FORM: PlacementForm = {
   role: "",
   packageOffered: "",
   year: String(new Date().getFullYear()),
+  placedAt: toISODateString(new Date()),
   image: "",
 };
 
@@ -114,6 +122,7 @@ export default function AdminPlacementsPage() {
       const payload = {
         ...formData,
         year: Number(formData.year),
+        placedAt: new Date(formData.placedAt),
         image: imageUrl,
       };
 
@@ -223,15 +232,13 @@ export default function AdminPlacementsPage() {
                   className="rounded-lg"
                 />
               </div>
-
+              
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Year</label>
+                <label className="text-sm font-medium text-gray-700">Placement Date</label>
                 <Input
-                  type="number"
-                  min={2000}
-                  max={2100}
-                  value={formData.year}
-                  onChange={(event) => setFormData((prev) => ({ ...prev, year: event.target.value }))}
+                  type="date"
+                  value={formData.placedAt}
+                  onChange={(event) => setFormData((prev) => ({ ...prev, placedAt: event.target.value }))}
                   required
                   className="rounded-lg"
                 />
@@ -306,7 +313,7 @@ export default function AdminPlacementsPage() {
                       <p className="text-xs text-gray-400">
                         {placement.role} at {placement.company}
                         {placement.packageOffered ? ` | ${placement.packageOffered}` : ""}
-                        {` | ${placement.year}`}
+                        {` | ${new Date(placement.placedAt).toLocaleDateString()}`}
                       </p>
                     </div>
                   </div>
