@@ -29,6 +29,10 @@ export default function Navbar() {
       baseHref: "/courses",
     },
     {
+      label: "Internship",
+      baseHref: "/internship",
+    },
+    {
       label: "Placement",
       baseHref: "/placement",
     },
